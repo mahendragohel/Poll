@@ -23,6 +23,10 @@ pipeline {
                 success {
                     junit allowEmptyResults: true, testResults: '**/test-results/*.xml'
                 }
+                always { 
+                    cleanWs()
+                }
+
             }
         }
     }
