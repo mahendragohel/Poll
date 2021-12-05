@@ -1,12 +1,12 @@
 pipeline{
   agent any
-  
+  tools { 
+        maven 'Maven 3.8.4'
+    }
   stages{
     stage('Build'){
       steps{
-        withMaven(maven: 'Maven 3.8.4'){
           sh 'clean compile'
-        }
       }
       post {
           // If Maven was able to run the tests, even if some of the test
@@ -20,9 +20,7 @@ pipeline{
     
     stage('Test'){
       steps{
-        withMaven(maven: 'Maven 3.8.4'){
           sh 'mvn test'
-        }
       }
     }
   }
