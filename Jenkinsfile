@@ -3,14 +3,26 @@ pipeline{
   
   stages{
     stage('Build'){
-      withMaven(maven: 'Maven 3.8.4'){
-        sh 'clean compile'
+      steps{
+        withMaven(maven: 'Maven 3.8.4'){
+          sh 'clean compile'
+        }
+      }
+      post {
+          // If Maven was able to run the tests, even if some of the test
+          // failed, record the test results and archive the jar file.
+          success {
+              junit '**/target/surefire-reports/TEST-*.xml'
+              archiveArtifacts 'target/*.jar'
+          }
       }
     }
     
     stage('Test'){
-      withMaven(maven: 'Maven 3.8.4'){
-        sh 'mvn test'
+      steps{
+        withMaven(maven: 'Maven 3.8.4'){
+          sh 'mvn test'
+        }
       }
     }
   }
